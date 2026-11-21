@@ -3,102 +3,142 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Club Manager 11 - EL AMOR</title>
+<title>CLUB MANAGER 11 - V2</title>
 <style>
-body{font-family:Arial;background:#0a3d1e;color:#fff;margin:0;padding:10px}
-h1{text-align:center;color:#ffd700}
-.card{background:#fff;color:#222;border-radius:12px;padding:12px;margin:10px 0}
-button{background:#ffd700;border:none;padding:10px 14px;border-radius:8px;font-weight:bold;margin:4px;cursor:pointer;width:100%}
-button.green{background:#00c853;color:#fff}
-select{width:100%;padding:10px;margin:5px 0;border-radius:8px}
-table{width:100%;border-collapse:collapse} td,th{border-bottom:1px solid #ddd;padding:6px;text-align:left;font-size:14px}
-#live{background:#000;color:#7CFC00;padding:10px;border-radius:10px;min-height:120px;font-size:15px}
-.ad{background:#eee;color:#666;text-align:center;padding:20px;border:2px dashed #999;border-radius:10px;margin:10px 0}
+*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#0b2a1a;color:white;padding:10px}
+.header{background:linear-gradient(90deg,#007A5E,#FCD116,#CE1126);padding:15px;border-radius:15px;text-align:center;color:#000}
+.header h1{margin:0;font-size:26px}.header p{margin:3px}
+.card{background:#123f2a;padding:14px;border-radius:14px;margin-top:12px;border:1px solid #2e7d5b}
+.stats{display:flex;gap:8px;text-align:center}.stat{flex:1;background:#0a1f14;padding:10px;border-radius:10px}.stat b{font-size:19px;color:#FCD116}
+button{width:100%;padding:13px;border:none;border-radius:10px;font-weight:bold;font-size:15px;margin-top:8px;cursor:pointer}
+.btn-green{background:#00c853;color:#fff}.btn-yellow{background:#FCD116;color:#000}.btn-blue{background:#2196F3;color:#fff}.btn-red{background:#e53935;color:#fff}
+.player{display:flex;justify-content:space-between;align-items:center;background:#0a1f14;padding:10px;border-radius:10px;margin-top:8px}
+.player button{width:90px;padding:8px;background:#FCD116;color:#000;margin:0}
+#live{background:#000;padding:12px;border-radius:10px;min-height:180px;font-size:14px;line-height:1.6;max-height:300px;overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:7px;border-bottom:1px solid #2e7d5b;text-align:left}.me{background:#FCD116;color:#000;font-weight:bold}
+.badge{display:inline-block;background:#FCD116;color:#000;padding:3px 8px;border-radius:20px;font-size:12px;margin:2px}
+.scoreboard{text-align:center;font-size:28px;background:#000;padding:15px;border-radius:12px;margin-top:10px}
 </style>
 </head>
 <body>
-<h1>⚽ CLUB MANAGER 11</h1>
-<p style="text-align:center">Par EL AMOR DIGITAL SERVICES</p>
+<div class="header"><h1>⚽ CLUB MANAGER 11</h1><p><b>Par EL AMOR DIGITAL SERVICES</b> • Yaoundé 🇨🇲</p><p id="trophees"></p></div>
 
-<div class="card">
-<b>💰 Budget: <span id="budget">500000</span> FCFA</b><br>
-<b>🏆 Club: Yaoundé Lions</b><br>
-<p>Points: <span id="points">0</span> | Victoires: <span id="vic">0</span> | Buts: <span id="buts">0</span> | Saison: <span id="saison">1</span></p>
+<div class="card"><div class="stats">
+<div class="stat">💰 Budget<br><b id="budget">500000</b><br><small>FCFA</small></div>
+<div class="stat">💪 Force<br><b id="force">72</b><br><small>/100</small></div>
+<div class="stat">🏆 Points<br><b id="pts">0</b><br><small id="pos">7e / 8</small></div>
+<div class="stat">🔥 Série<br><b id="serie">0</b><br><small>victoires</small></div>
+</div>
+<p>Club: <b>Yaoundé Lions 🦁</b> | Saison <span id="saison">1</span> | Journée <span id="journee">1</span></p>
+<button class="btn-yellow" onclick="entrainer()">🏋️ ENTRAÎNER (+3 Force) - 20.000 FCFA</button>
+<button class="btn-blue" onclick="pub()">📺 REGARDER UNE PUB (+50.000 FCFA)</button>
 </div>
 
-<div class="card">
-<h3>1. Ton Équipe</h3>
-<label>Formation</label>
-<select id="formation"><option>4-4-2</option><option>4-3-3</option><option>3-5-2</option><option>4-2-3-1</option></select>
-<label>Tactique</label>
-<select id="tactique"><option>Attaque</option><option>Équilibré</option><option>Défense</option><option>Contre-attaque</option></select>
-<p>Force: <b id="force">72</b> / 100</p>
-<button onclick="entrainer()">🏋️ Entraîner (+2 Force) - 20.000 FCFA</button>
+<div class="card"><h3>🟢 MATCH EN DIRECT</h3>
+<div class="scoreboard"><span id="scoreDom">Yaoundé Lions 0</span> - <span id="scoreExt">0 Adversaire</span><br><small id="minute">Appuie sur JOUER pour commencer</small></div>
+<div id="live">Clique sur JOUER LE MATCH pour voir le match minute par minute...</div>
+<button class="btn-green" onclick="jouer()">▶️ JOUER LE MATCH - Journée <span class="j">1</span></button>
+<button class="btn-red" onclick="saisonSuivante()">⏭️ SAISON SUIVANTE</button>
 </div>
 
-<div class="card">
-<h3>2. Marché des Transferts</h3>
-<div id="marche"></div>
-<button class="green" onclick="recruter()">🔍 Recruter un nouveau joueur</button>
-</div>
+<div class="card"><h3>⭐ MARCHÉ - Stars du Cameroun</h3><div id="marche"></div></div>
 
-<div class="card">
-<h3>3. Match en Direct</h3>
-<button class="green" onclick="jouerMatch()">▶️ JOUER LE MATCH</button>
-<div id="live">Clique sur JOUER pour commencer...</div>
-<p>Score: <b id="score">0 - 0</b></p>
-</div>
+<div class="card"><h3>📊 CLASSEMENT MTN ELITE ONE</h3><table><tr><th>#</th><th>Équipe</th><th>Pts</th><th>V</th></tr><tbody id="classement"></tbody></table></div>
 
-<div class="card">
-<h3>🏆 Classement</h3>
-<table id="classement"></table>
-<button onclick="saisonSuivante()">⏭️ Saison suivante</button>
-</div>
-
-<div class="card">
-<h3>💰 Pièces gratuites</h3>
-<button onclick="regarderPub()">📺 Regarder une annonce (+50.000 FCFA)</button>
-<p id="pubMsg" style="font-size:13px;color:green"></p>
-</div>
-
-<div class="ad">ESPACE PUBLICITAIRE<br><small>AdSense - 320x100</small></div>
+<div class="card" style="text-align:center"><p>Tu veux Aboubakar ? Gagne des matchs !<br><small>EL AMOR DIGITAL - Version 2 - 2026</small></p></div>
 
 <script>
-let budget=500000, points=0, vic=0, buts=0, saison=1, force=72;
-let clubs=["Yaoundé Lions","Douala Sharks","Garoua Bulls","Bafoussam Eagles","Kribi Stars","Ngaoundéré Kings"];
+let budget=500000, force=72, pts=0, serie=0, saison=1, journee=1, victoires=0;
 let joueurs=[
- {nom:"Eto'o Jr",poste:"AT",note:78,prix:80000},
- {nom:"Mballa",poste:"MIL",note:74,prix:60000},
- {nom:"Nkomo",poste:"DEF",note:71,prix:50000},
- {nom:"Amina",poste:"GARD",note:75,prix:65000},
+{name:"🧤 André 【entity-Onana¦canonical_name=Onana】",note:86,prix:250000,poste:"Gardien"},
+{name:"⚽ Vincent Aboubakar",note:84,prix:200000,poste:"Attaquant"},
+{name:"🔥 Bryan Mbeumo",note:82,prix:180000,poste:"Ailier"},
+{name:"💪 Zambo Anguissa",note:81,prix:160000,poste:"Milieu"},
+{name:"⚡ Carlos Baleba",note:79,prix:120000,poste:"Milieu"},
+{name:"🦁 Eto'o Jr",note:78,prix:80000,poste:"Attaquant"},
+{name:"🛡️ Nouhou Tolo",note:74,prix:50000,poste:"Défenseur"},
+{name:"🌟 Mballa Etoundi",note:70,prix:30000,poste:"Attaquant"}
 ];
+let equipes=[
+{name:"Yaoundé Lions 🦁",pts:0,v:0,me:true},
+{name:"Douala Sharks 🦈",pts:0,v:0},
+{name:"Garoua Bulls 🐂",pts:0,v:0},
+{name:"Bafoussam Eagles 🦅",pts:0,v:0},
+{name:"Bamenda Stars ⭐",pts:0,v:0},
+{name:"Ngaoundéré Kings 👑",pts:0,v:0},
+{name:"Kribi Océan 🌊",pts:0,v:0},
+{name:"Limbe Waves 🌊",pts:0,v:0}
+];
+let comsAttaque=["Mballa dribble 2 joueurs, quel talent !","Superbe passe de Zambo Anguissa !","Centre dangereux de Mbeumo...","Aboubakar demande le ballon !","La défense adverse est en difficulté !","Ohhh ! La frappe passe à côté !","Le gardien sort une parade incroyable !","Corner pour Yaoundé Lions, le stade se lève !","Quelle accélération sur le côté droit !","Le public de Yaoundé chante : Lions, Lions !"];
+let comsBut=["⚽ BUUUUT !!!! LE STADE EXPLOSE ! YAOUNDÉ LIONS MARQUE !","⚽ GOOOAL ! Aboubakar frappe et c'est dedans !","⚽ BUT MAGNIFIQUE ! Mbeumo ne laisse aucune chance !","⚽ BUT ! Le gardien n'a rien vu ! 1-0 pour les Lions !"];
+let comsAdverse=["⚽ But pour l'adversaire... Il faut réagir !","Oh non, l'adversaire marque. Allez les Lions !","L'adversaire contre-attaque vite..."];
+
 function maj(){
- document.getElementById('budget').innerText=budget;
- document.getElementById('points').innerText=points;
- document.getElementById('vic').innerText=vic;
- document.getElementById('buts').innerText=buts;
- document.getElementById('saison').innerText=saison;
- document.getElementById('force').innerText=force;
- let m=document.getElementById('marche'); m.innerHTML="";
- joueurs.forEach((j,i)=>{ m.innerHTML+=`<p>${j.nom} - ${j.poste} - Note ${j.note} - ${j.prix} FCFA <button onclick="acheter(${i})">Acheter</button></p>`});
- let c=document.getElementById('classement'); c.innerHTML="<tr><th>Club</th><th>Pts</th></tr>";
- clubs.forEach(cl=>{ let p = cl==="Yaoundé Lions"? points : Math.floor(Math.random()*points+5); c.innerHTML+=`<tr><td>${cl}</td><td>${p}</td></tr>`});
+document.getElementById('budget').innerText=budget.toLocaleString();
+document.getElementById('force').innerText=force;
+document.getElementById('pts').innerText=pts;
+document.getElementById('serie').innerText=serie;
+document.getElementById('saison').innerText=saison;
+document.getElementById('journee').innerText=journee;
+document.querySelectorAll('.j').forEach(e=>e.innerText=journee);
+let trie=[...equipes].sort((a,b)=>b.pts-a.pts);
+let pos=trie.findIndex(e=>e.me)+1;
+document.getElementById('pos').innerText=pos+"e / 8";
+document.getElementById('classement').innerHTML=trie.map((e,i)=>`<tr class="${e.me?'me':''}"><td>${i+1}</td><td>${e.name}</td><td>${e.pts}</td><td>${e.v}</td></tr>`).join('');
+let trop="";
+if(serie>=3) trop+='<span class="badge">🏆 3 Victoires d’affilée</span>';
+if(victoires>=5) trop+='<span class="badge">⭐ Légende de Yaoundé</span>';
+if(pts>=15) trop+='<span class="badge">👑 Leader du Championnat</span>';
+document.getElementById('trophees').innerHTML=trop;
+let m=document.getElementById('marche');
+m.innerHTML=joueurs.map((j,i)=>`<div class="player"><div><b>${j.name}</b><br><small>${j.poste} • Note ${j.note} • ${j.prix.toLocaleString()} FCFA</small></div><button onclick="acheter(${i})">Acheter</button></div>`).join('');
 }
-function entrainer(){ if(budget>=20000){ budget-=20000; force+=2; alert("Entraînement réussi ! Force +2"); } else alert("Pas assez d'argent"); maj(); }
-function acheter(i){ let j=joueurs[i]; if(budget>=j.prix){ budget-=j.prix; force+=2; alert(j.nom+" recruté !"); } else alert("Pas assez d'argent"); maj(); }
-function recruter(){ let noms=["Kamga","Fouda","Essono","Bella","Ondoa","Zock"]; let n=noms[Math.floor(Math.random()*noms.length)]; joueurs.push({nom:n,poste:"MIL",note:70+Math.floor(Math.random()*15),prix:40000}); maj(); }
-function jouerMatch(){
- let live=document.getElementById('live'); live.innerHTML="Coup d'envoi !...<br>";
- let monScore=0, advScore=0;
- let commentaires=["Belle passe de Mballa !","Frappe ! Ohhh juste à côté !","Super arrêt du gardien !","Corner pour Yaoundé Lions...","Contre-attaque rapide !","Le public est en feu à Yaoundé !"];
- let i=0;
- let inter=setInterval(()=>{
-   if(i<5){ let c=commentaires[Math.floor(Math.random()*commentaires.length)]; live.innerHTML+=c+"<br>"; if(Math.random()>0.6){ monScore++; buts++; live.innerHTML+="⚽ BUT !!! Pour Yaoundé Lions !<br>"; } if(Math.random()>0.75){ advScore++; live.innerHTML+="But pour l'adversaire...<br>"; } i++; }
-   else{ clearInterval(inter); document.getElementById('score').innerText=monScore+" - "+advScore; if(monScore>advScore){ points+=3; vic++; budget+=100000; live.innerHTML+="<br>🏆 VICTOIRE ! +100.000 FCFA"; } else if(monScore==advScore){ points+=1; budget+=30000; live.innerHTML+="<br>Match nul. +30.000 FCFA"; } else { live.innerHTML+="<br>Défaite. Entraîne-toi encore !"; } maj(); }
- },1200);
+function entrainer(){
+if(budget<20000){alert("Pas assez d'argent ! Regarde une pub.");return;}
+budget-=20000;force=Math.min(99,force+3);maj();alert("Entraînement terminé ! Force +3 💪");
 }
-function regarderPub(){ budget+=50000; document.getElementById('pubMsg').innerText="Merci ! +50.000 FCFA."; maj(); }
-function saisonSuivante(){ saison++; points=0; vic=0; alert("Nouvelle saison "+saison+" ! Bonne chance coach Joseph !"); maj(); }
+function pub(){budget+=50000;maj();alert("Merci d'avoir regardé ! +50.000 FCFA 📺");}
+function acheter(i){
+let j=joueurs[i];
+if(budget<j.prix){alert("Pas assez ! Gagne des matchs pour avoir "+j.prix+" FCFA");return;}
+budget-=j.prix;force=Math.min(99,force+Math.round((j.note-65)/3));joueurs.splice(i,1);maj();alert("Félicitations ! Tu as signé "+j.name+" ! Force augmentée !");
+}
+function jouer(){
+let adv=equipes.filter(e=>!e.me)[Math.floor(Math.random()*7)];
+let live=document.getElementById('live');live.innerHTML="";
+let scoreDom=0, scoreExt=0;
+let minutes=[5,12,20,28,35,45,52,60,68,75,82,88,90];
+let idx=0;
+document.getElementById('minute').innerText="Match en cours...";
+let interval=setInterval(()=>{
+if(idx>=minutes.length){
+clearInterval(interval);
+let gain=0;
+if(scoreDom>scoreExt){pts+=3;victoires++;serie++;gain=100000;budget+=gain;equipes.find(e=>e.me).pts+=3;equipes.find(e=>e.me).v++;live.innerHTML+=`<br><b>🏆 VICTOIRE ! +3 Points +100.000 FCFA !</b>`;}
+else if(scoreDom==scoreExt){pts+=1;serie=0;gain=30000;budget+=gain;equipes.find(e=>e.me).pts+=1;live.innerHTML+=`<br><b>🤝 MATCH NUL +1 Point +30.000 FCFA</b>`;}
+else{serie=0;live.innerHTML+=`<br><b>😢 Défaite... Entraîne-toi et reviens plus fort !</b>`;}
+// autres equipes jouent
+equipes.filter(e=>!e.me).forEach(e=>{let r=Math.random();if(r>0.6){e.pts+=3;e.v++;}else if(r>0.3){e.pts+=1;}});
+journee++;maj();
+document.getElementById('minute').innerText="Match terminé - Journée "+(journee-1);
+return;
+}
+let min=minutes[idx];
+let action="";
+if(Math.random()<0.35){
+if(Math.random()<0.55){scoreDom++;action=comsBut[Math.floor(Math.random()*comsBut.length)];}
+else{action=comsAttaque[Math.floor(Math.random()*comsAttaque.length)];}
+} else if(Math.random()<0.18){scoreExt++;action=comsAdverse[Math.floor(Math.random()*comsAdverse.length)];}
+else{action=comsAttaque[Math.floor(Math.random()*comsAttaque.length)];}
+live.innerHTML+=`<br><b>${min}'</b> - ${action}`;
+live.scrollTop=live.scrollHeight;
+document.getElementById('scoreDom').innerText="Yaoundé Lions "+scoreDom;
+document.getElementById('scoreExt').innerText=scoreExt+" "+adv.name;
+document.getElementById('minute').innerText=min+"' - vs "+adv.name;
+idx++;
+},800);
+}
+function saisonSuivante(){saison++;journee=1;pts=0;equipes.forEach(e=>{e.pts=0;e.v=0;});serie=0;maj();alert("Nouvelle saison ! Bonne chance Coach !");}
 maj();
 </script>
 </body>
